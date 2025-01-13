@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
-const PasswordManager = () => {
+const PasswordManager = ({ importWallet, createWallet }) => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [storePassword, setStorePassword] = useState(
@@ -18,7 +18,14 @@ const PasswordManager = () => {
       setPassword("");
       setNewPassword("");
       setError("");
-      alert("Password created succcessfully");
+      if (createWallet) {
+        alert("Password created succcessfully");
+        navigate("/home");
+      } else if (importWallet) {
+        alert("import wallet password created successfully");
+      } else {
+        setError("some thing went wrong");
+      }
     } else {
       setError(
         "Password must be at least 8 characters long and contain a mix of letters, numbers, and special characters."
