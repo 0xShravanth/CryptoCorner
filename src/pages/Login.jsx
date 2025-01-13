@@ -1,30 +1,30 @@
 /* eslint-disable no-unused-vars */
-import { React, useState } from "react";
+import { React } from "react";
 import Button from "../components/Button";
 import PasswordManager from "../components/PasswordManager";
-import Home from "./Home";
+import { useDispatch, useSelector } from "react-redux";
+import { setImportWallet, setCreateWallet } from "../redux/store";
 
 const Login = () => {
-  const [importWallet, setImportWallet] = useState(false);
-  const [createWallet, setCreateWallet] = useState(false);
-  const [managepage, setManagepage] = useState(
-    localStorage.getItem("password")
+  const dispatch = useDispatch();
+  const { importWallet, createWallet, password } = useSelector(
+    (state) => state.wallet
   );
 
   const handleImportWallet = () => {
-    setImportWallet(true);
+    dispatch(setImportWallet(true));
   };
 
   const handleCreateWallet = () => {
-    setCreateWallet(true);
+    dispatch(setCreateWallet(true));
   };
 
   return (
     <>
-      {!importWallet && !createWallet && !managepage ? (
+      {!importWallet && !createWallet && !password ? (
         <div className="flex flex-col items-center justify-center h-screen space-y-4">
           <h1 className="text-4xl font-bold text-center  bg-transparent text-ellipsis text-shadow">
-            Welcome to CryptoCorner{" "}
+            Welcome to CryptoCorner
           </h1>
           <Button
             onClick={handleCreateWallet}

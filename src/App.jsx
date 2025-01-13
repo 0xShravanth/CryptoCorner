@@ -13,7 +13,6 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/password" element={<PasswordManager />} />{" "}
           <Route path="/home" element={<Home />} />
         </Routes>
       </BrowserRouter>

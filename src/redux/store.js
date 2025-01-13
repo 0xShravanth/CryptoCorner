@@ -1,3 +1,4 @@
+// src/redux/store.js
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -11,17 +12,18 @@ const walletSlice = createSlice({
   name: "wallet",
   initialState,
   reducers: {
-    setImportWallet: (state, action) => {
+    setImportWallet(state, action) {
       state.importWallet = action.payload;
     },
-    setCreateWallet: (state, action) => {
+    setCreateWallet(state, action) {
       state.createWallet = action.payload;
     },
-    setPassword: (state, action) => {
+    setPassword(state, action) {
       state.password = action.payload;
+      localStorage.setItem("password", action.payload);
     },
-    clearPassword: (state) => {
-      state.clearPassword = null;
+    clearPassword(state) {
+      state.password = null;
       localStorage.removeItem("password");
     },
     setError(state, action) {
@@ -39,7 +41,9 @@ export const {
 } = walletSlice.actions;
 
 const store = configureStore({
-  reducer: walletSlice.reducer,
+  reducer: {
+    wallet: walletSlice.reducer,
+  },
 });
 
 export default store;

@@ -1,34 +1,40 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setPassword, clearPassword, setError } from "../redux/store";
 import Button from "./Button";
 
 const PasswordManager = ({ importWallet, createWallet }) => {
-  const [password, setPassword] = useState("");
+  const [password, setPasswordInput] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [storePassword, setStorePassword] = useState(
-    localStorage.getItem("password")
-  );
-  const [error, setError] = useState("");
+
+  //using redux
+  const storePassword = useSelector((state) => state.wallet.password);
+  const error = useSelector((state) => state.wallet.error);
+  const dispatch = useDispatch();
+  //using navigation
   const navigate = useNavigate();
 
   const handleCreatePassword = () => {
     if (validatePassword(newPassword)) {
       localStorage.setItem("password", newPassword);
-      setStorePassword(newPassword);
-      setPassword("");
+      dispatch(setPassword(newPassword));
+      setPasswordInput("");
       setNewPassword("");
-      setError("");
       if (createWallet) {
         alert("Password created succcessfully");
         navigate("/home");
       } else if (importWallet) {
         alert("import wallet password created successfully");
       } else {
-        setError("some thing went wrong");
+        dispatch(setError("some thing went wrong"));
       }
     } else {
-      setError(
-        "Password must be at least 8 characters long and contain a mix of letters, numbers, and special characters."
+      dispatch(
+        setError(
+          "Password must be at least 8 characters long and contain a mix of letters, numbers, and special characters."
+        )
       );
     }
   };
@@ -37,16 +43,14 @@ const PasswordManager = ({ importWallet, createWallet }) => {
     if (password === storePassword) {
       navigate("/home");
     } else {
-      setError("Incorrect password");
+      dispatch(setError("Incorrect password"));
     }
   };
 
   const handleClearPassword = () => {
-    localStorage.removeItem("password");
-    setStorePassword(null);
+    dispatch(clearPassword());
     setPassword("");
     setNewPassword("");
-    setError("");
     alert("password cleared");
   };
 
@@ -67,7 +71,7 @@ const PasswordManager = ({ importWallet, createWallet }) => {
             type="password"
             placeholder="Enter Your Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPasswordInput(e.target.value)}
             className="px-4 py-2 border rounded mb-4"
           />
           <Button
@@ -92,7 +96,7 @@ const PasswordManager = ({ importWallet, createWallet }) => {
             type="password"
             placeholder="Enter your password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPasswordInput(e.target.value)}
             className="px-4 py-2 border rounded mb-4"
           />
           <input
