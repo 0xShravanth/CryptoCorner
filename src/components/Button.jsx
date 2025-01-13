@@ -2,9 +2,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-const Button = ({ children, OnClick, className }) => {
+const Button = ({ children, onClick, className }) => {
   return (
-    <button onClick={OnClick} className={`px-4 py-2 rounded-md  ${className}`}>
+    <button onClick={onClick} className={`px-4 py-2 rounded-md  ${className}`}>
       {children}
     </button>
   );
