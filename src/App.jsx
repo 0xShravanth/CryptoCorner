@@ -6,6 +6,7 @@ import PasswordManager from "./components/PasswordManager";
 import Home from "./pages/Home";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import Mnemonics from "./components/Mnemonics";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/t" element={<Mnemonics />} />
         </Routes>
       </BrowserRouter>
     </Provider>

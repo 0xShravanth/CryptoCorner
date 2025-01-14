@@ -1,7 +1,30 @@
-// src/redux/store.js
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+//for the initial state of the store for mnemonics
+const initialMnemonicState = {
+  mnemonic: "",
+  mnemonicWords: [],
+};
+
+const mnemonicSlice = createSlice({
+  name: "mnemonic",
+  initialState: initialMnemonicState,
+  reducers: {
+    setMnemonic(state, action) {
+      state.mnemonic = action.payload;
+      state.mnemonicWords = action.payload.split(" "); //splitting the mnemonics into words
+      localStorage.setItem("mnemonic", action.payload);
+    },
+    clearMnemonic(state) {
+      state.mnemonic = "";
+      state.mnemonicWords = [];
+      localStorage.removeItem("mnemonic");
+    },
+  },
+});
+
+// for the initial state of the store for walletpassword management
+const initialWalletState = {
   importWallet: false,
   createWallet: false,
   password: localStorage.getItem("password"),
@@ -10,7 +33,7 @@ const initialState = {
 
 const walletSlice = createSlice({
   name: "wallet",
-  initialState,
+  initialState: initialWalletState,
   reducers: {
     setImportWallet(state, action) {
       state.importWallet = action.payload;
@@ -32,6 +55,8 @@ const walletSlice = createSlice({
   },
 });
 
+export const { setMnemonic, clearMnemonic } = mnemonicSlice.actions;
+
 export const {
   setImportWallet,
   setCreateWallet,
@@ -42,6 +67,7 @@ export const {
 
 const store = configureStore({
   reducer: {
+    mnemonic: mnemonicSlice.reducer,
     wallet: walletSlice.reducer,
   },
 });
